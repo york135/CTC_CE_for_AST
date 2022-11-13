@@ -1,0 +1,11 @@
+numpy==1.19.2
+torch==1.9.1
+torchaudio==0.9.1
+spleeter
+librosa
+cython
+matplotlib
+mido
+mir-eval
+omnizart==0.5.0
+madmom

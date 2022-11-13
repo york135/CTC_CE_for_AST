@@ -1,0 +1,9 @@
+network_file: "net/onset_and_pitch_0901.py"
+network_class_name: "Split_onset_pitch"
+feature_extractor_file: "data_utils/get_feature.py"
+feature_extractor_class_name: "CQT_feature_extractor"
+do_svs: True
+onset_thres: 0.26
+offset_thres: 0.7
+show_tqdm: True
+tomidi: True

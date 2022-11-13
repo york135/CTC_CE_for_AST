@@ -1,0 +1,6 @@
+feature_extractor_file: "data_utils/get_feature.py"
+feature_extractor_class_name: "CQT_feature_extractor"
+audio_dir: "../MIR-ST500"
+vocal_name: "Vocal.wav"
+inst_name: "Inst.wav"
+feature_output_name: "feature_1025.hdf5"

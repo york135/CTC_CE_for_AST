@@ -1,0 +1,12 @@
+network_file: "../net/onset_and_pitch_0901.py"
+network_class_name: "Split_onset_pitch"
+dataset_dir: "../../MIR-ST500"
+h5py_feature_file_name: "feature.hdf5"
+gt_json_path: "../json/MIR-ST500_corrected_0514_+30ms.json"
+epoch: 100
+onset_thres_start: 0.02
+onset_thres_end: 0.98
+onset_thres_step_size: 0.02
+offset_thres_start: 0.02
+offset_thres_end: 0.98
+offset_thres_step_size: 0.02
