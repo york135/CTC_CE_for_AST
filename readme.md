@@ -58,8 +58,6 @@ python do_everything.py shenqing.wav shenqing.mid models/ctc_ce#3_98 \
 
 That's it. To perform singing transcription on other songs, just modify *input path* and *output path*.
 
-
-
 \* Note that the config files for different model checkpoints (even with the same model architecture) may be different because the *onset threshold* and *offset threshold* vary across model checkpoints, which are two hyper-parameters that should be tuned.
 
 \** Thanks to 吳定洋 (the composer of this song) and 林大鈞 (the singer of this song) for granting the right of using this song for demo. The original video can be found on Youtube [here](https://www.youtube.com/watch?v=J8r6pMwFH2w).
@@ -213,8 +211,6 @@ Note that you have to set either `use_strongly_dataset` or `use_weakly_dataset` 
 `epoch` specifies the number of epochs for training. We define an *epoch* as the number of iterations required to iterate the **weakly labeled training dataset** once. If the weakly labeled data is not used for training, then an epoch is defined based on strongly labeled training dataset. This definition affects extreme settings such as *CE10+CTC400* a lot, since 1000 iterations (10 strongly-labeled songs $\times$ 100) are not enough to train a decent singing transcription model.
 
 `warmup_epoch` specifies the number of warmup epochs (where CTC loss is disabled), `lr` is the learning rate, `batch_size` is the batch size (to save GPU memory, the batch size of the dataloader is always fixed at 1, and this so-called batch size is achieved by calling optimizer.step() after multiple forward passes), `model_save_dir` is the directory to save model checkpoints, `model_save_prefix` is the prefix of model checkpoints (the model checkpoint name will be `model_save_prefix` followed by the '_' symbol and epoch number). `log_path` specifies the output path of the training log pickle file. 
-
-OK, finally I've explained all these arguments. That's quite a lot... but that's necessary because we may (or may not) use weakly labeled data for training...
 
 Then, run the following command:
 
