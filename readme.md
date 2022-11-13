@@ -131,7 +131,7 @@ However, it is not that easy to create *strong labels*, because *onset* and *off
 
 Fortunately, our singing transcription model can be trained with either strongly-labeled or weakly-labeled data.
 
-\*Some other papers may use *onset*, *duration*, and *note pitch* to define a note, which is similar to MIDI format. The *offset* can be obtained by adding *duration* to *onset*. Similarly, *duration* can be obtained by subtracting *onset* from *offset*.
+\*Some other papers may use *onset*, *duration*, and *note pitch* to define a note, which is similar to MIDI format. The *offset* can be obtained by adding *duration* to *onset*.
 
 #### For strongly-labeled data
 
@@ -162,7 +162,7 @@ Then, run the following command:
 python gt_weak_dataset.py [gt_json_path] [output_path] [dataset_dir]
 ```
 
-This script generates a pickle file from weak labels. The pickle file contains only sequence-level labels (i.e., the note sequence), which will then be used for model training.
+This script generates a pickle file from weak labels. The pickle file contains only sequence-level labels (i.e., the note sequence).
 
 The meaning of the three arguments here are the same as  `gt_strong_dataset.py`. Since there is no exact onset and offset label, we cannot create frame-level labels. Therefore, we don't need `weighting_method` anymore.
 
@@ -268,7 +268,7 @@ The `find_parameter.py` script loads the models' frame-level prediction (onset p
 
 Again, `yaml_path` is the path to the config file, `prediction_output_prefix` specifies the prefix of the pickle files where the model predictions are. After an extremely time-consuming hyper-parameter searching process, the best onset and offset threshold for each model checkpoint will be written to `predicted_threshold_output_path`, and the model performance using these best thresholds will be written to  `model_performance_output_path`.
 
-In our experiments reported in the paper, we used the whole MIR-ST500 training set for hyper-parameter searching. Under this setting, this step would take **a lot of** times (sometimes even longer than the model training process itself). This is quite normal.
+In our experiments reported in the paper, we used the whole MIR-ST500 training set for hyper-parameter searching. Under this setting, this step would take **a lot of** times. This is quite normal.
 
 ### Model testing
 
@@ -309,7 +309,7 @@ Based on my (maybe somewhat inaccurate) memory, using an NVIDIA 1080 ti GPU and 
 
 - Model training (MIR-ST500 training set, 100 epochs, batch size=1, using GPU): **1 day** if only cross-entropy loss is used, **1.5~2 days** if both cross-entropy loss and CTC loss are used.
 
-- Hyper-parameter exhaustive search (MIR-ST500 training set, 100 epochs, using GPU): **4 hours** to run `predict_each_epoch.py`, almost **1 day** to run `find_parameter.py`.
+- Hyper-parameter exhaustive search (MIR-ST500 training set, 100 epochs, using GPU): **4 hours** to run `predict_each_epoch.py`, **1 day** to run `find_parameter.py`.
 
 - Model testing (MIR-ST500 test set, 100 songs, using GPU): **less than 5 minutes**.
 
@@ -379,6 +379,8 @@ will call scipy.stats.ttest_ind() function, and then display t-tests result.
 Please refer to [Omnizart package](https://github.com/Music-and-Culture-Technology-Lab/omnizart). The only thing worth noting is that, to test the model performance of Omnizart on the ISMIR2014 dataset (*monophonic vocal*), we modified Omnizart's source code to disable the use of Spleeter (singing voice separation model), and directly passed the original audio to Omnizart's singing transcirption model (using *omnizart vocal transcribe* command). This would slightly affect the model performance, and we think disabling Spleeter should be reasonable because we do know that the ISMIR2014 dataset contains no instrument.
 
 ## Note
+
+- In our paper, we propose to shift the groundtruth of the MIR-ST500 dataset by +30ms. The shifted groundtruth can be found at [here](https://drive.google.com/drive/folders/1lxq-IF83cEXE8XsTFywNJhwtDSRXWqRx?usp=sharing), whose file name is `MIR-ST500_corrected_0514_+30ms.json`. The original groundtruth file can be found [here](https://github.com/york135/singing_transcription_ICASSP2021), whose file name is `MIR-ST500_corrected_0514.json`.
 
 - Actually this is not the original source code I used in the experiments. The original source code is pretty messy, and most of the arguments have to be specified in the python files. I don't think this is a good coding style. Therefore, I reformulated the code and used yaml files to specify the arguments in the last couple of weeks. However, this may lead to unexpected bugs. Please feel free to open an issue if you spot any bug.
 
