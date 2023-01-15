@@ -58,6 +58,8 @@ python do_everything.py shenqing.wav shenqing.mid models/ctc_ce#3_98 \
 
 That's it. To perform singing transcription on other songs, just modify *input path* and *output path*.
 
+(2023.01.15 updated) The result should be identical (or at least almost identical, due to different environment/version of python packages) to `shenqing_ctc_ce#3_98.mid`, which can also be downloaded from the same folder on google drive.
+
 \* Note that the config files for different model checkpoints (even with the same model architecture) may be different because the *onset threshold* and *offset threshold* vary across model checkpoints, which are two hyper-parameters that should be tuned.
 
 \** Thanks to 吳定洋 (the composer of this song) and 林大鈞 (the singer of this song) for granting the right of using this song for demo. The original video can be found on Youtube [here](https://www.youtube.com/watch?v=J8r6pMwFH2w).
