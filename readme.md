@@ -1,5 +1,11 @@
 # CTC_CE_for_AST
 
+## Change log
+
+Oct 13, 2023: Fix "split_train_loss0 =nan" bug (**issue #3**)
+
+
+
 ## Introduction
 
 This is the source code of the following paper:

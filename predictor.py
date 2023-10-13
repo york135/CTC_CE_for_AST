@@ -51,8 +51,8 @@ class CTC_CE_loss(nn.Module):
             on_weight = batch[2][0][0:1].float().to(self.device)
             off_weight = batch[2][0][1:2].float().to(self.device)
 
-            split_train_loss0 = torch.dot(self.onset_criterion(onset_logits, onset_prob)[0], on_weight[0]) / torch.sum(on_weight)
-            split_train_loss1 = torch.dot(self.offset_criterion(offset_logits, offset_prob)[0], off_weight[0]) / torch.sum(off_weight)
+            split_train_loss0 = torch.dot(self.onset_criterion(onset_logits, onset_prob)[0], on_weight[0]) / torch.clip(torch.sum(on_weight), min=1e-10)
+            split_train_loss1 = torch.dot(self.offset_criterion(offset_logits, offset_prob)[0], off_weight[0]) / torch.clip(torch.sum(off_weight), min=1e-10)
             split_train_loss2 = self.octave_criterion(pitch_octave_logits.permute(0, 2, 1), pitch_octave)
             split_train_loss3 = self.pitch_criterion(pitch_class_logits.permute(0, 2, 1), pitch_class)
 
