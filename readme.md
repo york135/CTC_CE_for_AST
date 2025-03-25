@@ -55,20 +55,7 @@ where `input_path` is the path to the audio file to be transcribed; `output_path
 
 As for pretrained model checkpoints, we have uploaded pretrained model checkpoints and the config files related to the checkpoints [here](https://drive.google.com/drive/folders/1lxq-IF83cEXE8XsTFywNJhwtDSRXWqRx?usp=sharing)\*.
 
-Take `ctc_ce#3_98` as an example, the corresponding config is `inference_ce_ctc#3_98.yaml`. Suppose the checkpoint is put under`models` directory, while the config file is put under `configs` directory, and the input audio name is `shenqing.wav`\(you can download this demo audio [here](https://drive.google.com/drive/folders/1lxq-IF83cEXE8XsTFywNJhwtDSRXWqRx?usp=sharing)**), the desired output path is `shenqing.mid`, and the GPU resource is not available, then you can run:
-
-```
-python do_everything.py shenqing.wav shenqing.mid models/ctc_ce#3_98 \
- configs/inference_ce_ctc#3_98.yaml cpu
-```
-
-That's it. To perform singing transcription on other songs, just modify *input path* and *output path*.
-
-(2023.01.15 updated) The result should be identical (or at least almost identical, due to different environment/version of python packages) to `shenqing_ctc_ce#3_98.mid`, which can also be downloaded from the same folder on google drive.
-
 \* Note that the config files for different model checkpoints (even with the same model architecture) may be different because the *onset threshold* and *offset threshold* vary across model checkpoints, which are two hyper-parameters that should be tuned.
-
-\** Thanks to 吳定洋 (the composer of this song) and 林大鈞 (the singer of this song) for granting the right of using this song for demo. The original video can be found on Youtube [here](https://www.youtube.com/watch?v=J8r6pMwFH2w).
 
 ## Reproduce experiments
 
@@ -303,24 +290,6 @@ where `gt_file` is the path to the groundtruth note labels (JSON file, must be s
 
 This python program will then print the model performance to standard output.
 
-### Estimated runtime (as a reference)
-
-Based on my (maybe somewhat inaccurate) memory, using an NVIDIA 1080 ti GPU and a Intel Core i9-7900X CPU, the estimated runtime is about:
-
-- Inference (`do_everything.py`): **30 seconds** for each 4-minute song
-
-- Prepare data (Run spleeter for SVS, w/ CPU): **1~2 hours** for the MIR-ST500 dataset.
-
-- Feature extraction: **1 hour** for the MIR-ST500 dataset.
-
-- Create groundtruth data: **less than 5 minutes** for the MIR-ST500 dataset.
-
-- Model training (MIR-ST500 training set, 100 epochs, batch size=1, using GPU): **1 day** if only cross-entropy loss is used, **1.5~2 days** if both cross-entropy loss and CTC loss are used.
-
-- Hyper-parameter exhaustive search (MIR-ST500 training set, 100 epochs, using GPU): **4 hours** to run `predict_each_epoch.py`, **1 day** to run `find_parameter.py`.
-
-- Model testing (MIR-ST500 test set, 100 songs, using GPU): **less than 5 minutes**.
-
 ### Misc
 
 Here are the commands used to reproduce other parts of experiments/figures in the paper. They are not directly related to model training, so I will not explain them in detail.
@@ -390,8 +359,6 @@ Please refer to [Omnizart package](https://github.com/Music-and-Culture-Technolo
 
 - In our paper, we propose to shift the groundtruth of the MIR-ST500 dataset by +30ms. The shifted groundtruth can be found at [here](https://drive.google.com/drive/folders/1lxq-IF83cEXE8XsTFywNJhwtDSRXWqRx?usp=sharing), whose file name is `MIR-ST500_corrected_0514_+30ms.json`. The original groundtruth file can be found [here](https://github.com/york135/singing_transcription_ICASSP2021), whose file name is `MIR-ST500_corrected_0514.json`.
 
-- Actually this is not the original source code I used in the experiments. The original source code is pretty messy, and most of the arguments have to be specified in the python files. I don't think this is a good coding style. Therefore, I reformulated the code and used yaml files to specify the arguments in the last couple of weeks. However, this may lead to unexpected bugs. Please feel free to open an issue if you spot any bug.
+- Actually this is not the original source code I used in the experiments. The original source code is pretty messy, and most of the arguments have to be specified in the python files. So I reformulated the code and used yaml files to specify the arguments in the last couple of weeks. However, this may lead to unexpected bugs. Please feel free to open an issue if you spot any bug.
 
-- If you have any song that can be used for demo (without any copyright issue), please let me know. I will appreciate it, and will try my best to promote your songs (maybe in this repo or other SNS pages).
-
-- (Added 2023/03/31) A small suggestion. The proposed model itself does not overfit to the training set (you can see that the model's F1-scores on the training set and test set are almost the same). Therefore, using the training set for parameter search does not lead to suboptimal results. But if you somehow build a very large model for singing transcription, then I would still suggest you to use a validation set. The MIR-ST500 dataset has no official split for validation set. You have to split it by yourself. I've just realized this today......
+- (Added 2023/03/31) A small suggestion. The proposed model itself does not overfit to the training set (you can see that the model's F1-scores on the training set and test set are almost the same). Therefore, using the training set for parameter search does not lead to bad results. But for a larger model that is prone to overfitting, using a part of the training set for validation could be a better choice. The MIR-ST500 dataset has no official split for validation set, so feel free to create your train/validation split by yourself.
